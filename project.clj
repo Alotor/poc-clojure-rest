@@ -6,6 +6,8 @@
      [compojure "1.1.3"]
      [korma "0.3.0-RC5"]
      [lobos "1.0.0-beta1"]
-     [org.xerial/sqlite-jdbc "3.7.2"]]
+;     [com.h2database/h2 "1.3.170"]] 
+     [postgresql "9.1-901.jdbc4"]]
+
   :plugins [[lein-ring "0.8.3"]]
-  :ring {:handler rest.tasks.core/app})
+  :ring {:handler rest.tasks.routes/tasks-routes})

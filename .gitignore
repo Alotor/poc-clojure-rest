@@ -11,3 +11,4 @@
 .lein-repl-history
 /target/
 .nrepl-port
+.lobos_stash.clj
