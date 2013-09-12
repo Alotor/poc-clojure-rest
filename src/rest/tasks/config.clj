@@ -3,7 +3,7 @@
 
 ; Database definition
 (def database-spec {
-    :classname "org.postgresql.Driver" 
-    :subprotocol "postgresql" 
-    :user "tasks" 
-    :subname "//localhost:5432/tasks"})
+  :classname "org.postgresql.Driver" 
+  :subprotocol "postgresql" 
+  :user "tasks" 
+  :subname "//localhost:5432/tasks"})

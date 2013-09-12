@@ -1,46 +1,51 @@
 ; Module to store database migrations
 (ns rest.tasks.migration
-  (:refer-clojure :exclude [alter drop time boolean float char bigint double complement])
   (:require 
     [rest.tasks.config :as config]
-    [lobos.connectivity :refer :all]
-    [lobos.core :refer :all]
-    [lobos.schema :refer :all]
-    [lobos.migration :refer :all]
-    [korma.core :as korma]
-    [rest.tasks.models :refer :all]))
+    [rest.tasks.models :as models]
+    [lobos.connectivity :as conn]
+    [lobos.core :as lobos]
+    [lobos.schema :as s]
+    [lobos.migration :as migration]
+    [korma.core :as korma]))
 
 (defn insert-test-users []
-  (korma/insert users 
+  (korma/insert models/users 
     (korma/values [
-      {:id 1 :email "test@test.com"}
-      {:id 2 :email "asdf@asdf.com"}])))
+      {:email "admin@test.com" :password "admin"}
+      {:email "user@test.com"  :password "user"}])))
 
-(defmigration add-users-table-migration
-  (up [] (do (add-users-table)(insert-test-users)))
-  (down [] (drop (table :users))))
+(migration/defmigration add-users-table-migration
+  (migration/up [] 
+    (do 
+       (models/add-users-table)
+       (insert-test-users)))
+  (migration/down [] 
+    (lobos/drop (s/table :users))))
 
-(defmigration add-tasks-table-migration
-  (up [] (add-tasks-table))
-  (down [] (drop (table :tasks))))
+(migration/defmigration add-tasks-table-migration
+  (migration/up [] 
+    (models/add-tasks-table))
+  (migration/down [] 
+    (lobos/drop (s/table :tasks))))
 
-(open-global config/database-spec)
+(conn/open-global config/database-spec)
 (defn execute-migration []
-  (binding [lobos.migration/*migrations-namespace* 'rest.tasks.migration
-            lobos.migration/*reload-migrations* false]
+  (binding [migration/*migrations-namespace* 'rest.tasks.migration
+            migration/*reload-migrations* false]
     (do 
       (println ">> Migration start")
-      (migrate config/database-spec)
+      (lobos/migrate config/database-spec)
       (println "<< Migration end"))))
 
 (defn restore-database []
-  (binding [lobos.migration/*migrations-namespace* 'rest.tasks.migration
-            lobos.migration/*reload-migrations* false]
+  (binding [migration/*migrations-namespace* 'rest.tasks.migration
+            migration/*reload-migrations* false]
     (do 
       (println ">> Rollback all migrations")
-      (rollback config/database-spec :all)
+      (lobos/rollback config/database-spec :all)
       (println "<< Rollback finished")
       (println ">> Migration start")
-      (migrate config/database-spec)
+      (lobos/migrate config/database-spec)
       (println "<< Migration end"))))
 

@@ -1,19 +1,18 @@
 (ns rest.tasks.models
-  (:refer-clojure :exclude [alter drop time boolean float char bigint double complement])
   (:require 
     [rest.tasks.config :as config]
-    [lobos.connectivity :refer :all]
-    [lobos.core :refer :all]
-    [lobos.schema :refer :all]
+    [lobos.core :as lobos]
+    [lobos.schema :as s]
     [korma.core :as korma]))
 
 (defn add-users-table []
-  (create (table :users 
-     (integer :id :primary-key)
-     (varchar :email 255 :unique)
-     (varchar :password 255)
-     (time :date-created)
-     (time :date-updated))))
+  (lobos/create (s/table :users 
+     (s/integer :id :primary-key :auto-inc)
+     (s/varchar :email 255 :unique :not-null)
+     (s/varchar :password 255 :not-null)
+     (s/timestamp :date-created :not-null :time-zone (s/default (now)))
+     (s/timestamp :date-updated :not-null :time-zone (s/default (now)))
+  )))
 
 (korma/defentity users
   (korma/pk :id)
@@ -22,11 +21,15 @@
   (korma/entity-fields :id :email :password :date-created :date-updated))
 
 (defn add-tasks-table []
-  (create (table :tasks
-     (integer :id :primary-key)
-     (varchar :title 255 :unique)
-     (text :description)
-     (boolean :completed))))
+  (lobos/create (s/table :tasks
+     (s/integer :id :primary-key :auto-inc)
+     (s/varchar :title 255 :unique :not-null)
+     (s/text :description)
+     (s/boolean :completed :not-null)
+     (s/integer :owner-id [:refer :users :id :on-delete :set-null])
+     (s/timestamp :date-created :not-null :time-zone (s/default (now)))
+     (s/timestamp :date-updated :not-null :time-zone (s/default (now)))
+  )))
   
 (korma/defentity tasks
   (korma/pk :id)
