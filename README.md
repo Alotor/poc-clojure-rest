@@ -19,18 +19,14 @@ The application it's executed inside Leiningen.
 In order to load the database schema you should execute the database migration:
 
 ```
-lein repl
-user=> (use 'rest.tasks.migration)
-user=> (execute-migration)
+lein migrate
 ```
 
 If you don't want to use incremental migration but you wanna to restore the whole database you
 should execute:
 
 ```
-lein repl
-user=> (use 'rest.tasks.migration)
-user=> (restore-database)
+lein regenerate
 ```
 
 ## Application start
