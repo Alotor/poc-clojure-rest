@@ -10,4 +10,5 @@
      [postgresql "9.1-901.jdbc4"]]
 
   :plugins [[lein-ring "0.8.3"]]
-  :ring {:handler rest.tasks.routes/tasks-routes})
+  :ring {:handler rest.tasks.routes/tasks-routes}
+  :eval-in-leiningen true)
