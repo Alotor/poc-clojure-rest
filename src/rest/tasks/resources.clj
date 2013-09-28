@@ -3,7 +3,7 @@
     [rest.tasks.services :as services]
     [rest.tasks.models :as models]
     [liberator.core :refer [defresource]]
-    [clojure.data.json :refer[JSONWriter]] 
+    [clojure.data.json :refer[JSONWriter]]
     ))
 
 (defn- write-timestamp [x out]

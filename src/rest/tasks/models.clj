@@ -1,12 +1,12 @@
 (ns rest.tasks.models
-  (:require 
+  (:require
     [rest.tasks.config :as config]
     [lobos.core :as lobos]
     [lobos.schema :as s]
     [korma.core :as korma]))
 
 (defn add-users-table []
-  (lobos/create (s/table :users 
+  (lobos/create (s/table :users
      (s/integer :id :primary-key :auto-inc)
      (s/varchar :email 255 :unique :not-null)
      (s/varchar :password 255 :not-null)
@@ -30,7 +30,7 @@
      (s/timestamp :date-created :not-null :time-zone (s/default (now)))
      (s/timestamp :date-updated :not-null :time-zone (s/default (now)))
   )))
-  
+
 (korma/defentity tasks
   (korma/pk :id)
   (korma/table :tasks)
