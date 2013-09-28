@@ -6,8 +6,8 @@
      [compojure "1.1.3"]
      [korma "0.3.0-RC5"]
      [lobos "1.0.0-beta1"]
-;     [com.h2database/h2 "1.3.170"]] 
-     [postgresql "9.1-901.jdbc4"]]
+     [postgresql "9.1-901.jdbc4"]
+     [hiccup "1.0.4"]]
 
   :plugins [[lein-ring "0.8.3"]]
   :ring {:handler rest.tasks.routes/tasks-routes}
