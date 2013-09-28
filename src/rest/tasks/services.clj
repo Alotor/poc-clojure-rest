@@ -1,5 +1,5 @@
 (ns rest.tasks.services
-  (:require 
+  (:require
     [korma.core :refer :all]
     [rest.tasks.models :refer :all]))
 
