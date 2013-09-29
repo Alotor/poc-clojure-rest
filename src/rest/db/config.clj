@@ -1,5 +1,5 @@
 ; Module to store application configuration across modules
-(ns rest.tasks.config)
+(ns rest.db.config)
 
 ; Database definition
 (def database-spec {
