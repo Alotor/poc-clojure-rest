@@ -6,11 +6,11 @@ Licensed under Apache 2.0 License
 ## Application database
 The application it's prepared to use a database defined in "config.clj" default configuration
 
-```
+```clojure
 (def database-spec {
-    :classname "org.postgresql.Driver" 
-    :subprotocol "postgresql" 
-    :user "tasks" 
+    :classname "org.postgresql.Driver"
+    :subprotocol "postgresql"
+    :user "tasks"
     :subname "//localhost:5432/tasks"})
 ```
 
@@ -45,6 +45,6 @@ A domain specific language for Clojure SQL access.
 
 ### Lobos
 Library to maintain database schemas an generate database migrations.
-Lobos contains a bug that doesn't allow migrations with sqlite3. We use H2 database instead.
+Lobos contains a bug that doesn't allow migrations with sqlite3. We use Postgres database instead.
 
 Work in progress...
