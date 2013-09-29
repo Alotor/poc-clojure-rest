@@ -1,5 +1,5 @@
 (ns rest.tasks.test.core
-  (:use [rest.tasks.core])
+  (:use [rest.core])
   (:use [clojure.test]))
 
 (deftest replace-me ;; FIXME: write

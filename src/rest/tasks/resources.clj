@@ -18,4 +18,4 @@
   #(let [media-type (get-in % [:representation :media-type])]
      (condp = media-type
        "text/html" (views/tasks)
-       "application/json" (services/search-tasks))))
+       "application/json" (services/all-tasks))))
