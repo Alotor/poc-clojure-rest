@@ -34,7 +34,7 @@
 (defresource task
   :allowed-methods [:get :put :delete]
   :available-media-types ["application/json"]
-  :authorized? logged-in-user
+  :authorized? logged-in-user ; FIXME: this should check for ownership too
   :put! (fn [context]
            (let [body (slurp (get-in context [:request :body]))
                  id (services/update-task (read-str body :key-fn keyword))]
