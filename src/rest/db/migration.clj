@@ -1,6 +1,7 @@
 ; Module to store database migrations
 (ns rest.db.migration
   (:require
+    [rest.auth.services :refer [encrypt-password]]
     [rest.db.config :as config]
     [rest.auth.models :refer [users add-users-table]]
     [rest.tasks.models :refer [tasks add-tasks-table]]
@@ -13,8 +14,8 @@
 (defn insert-test-users []
   (korma/insert users
     (korma/values [
-      {:email "admin@test.com" :password "admin"}
-      {:email "user@test.com"  :password "user"}])))
+      {:username "admin" :email "admin@test.com" :password (encrypt-password "admin")}
+      {:username "user" :email "user@test.com"  :password (encrypt-password "user")}])))
 
 ; TODO
 (defn insert-test-tasks []

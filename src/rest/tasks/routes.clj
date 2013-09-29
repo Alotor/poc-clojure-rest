@@ -1,7 +1,10 @@
 (ns rest.tasks.routes
   (:require
-    [compojure.core :refer [defroutes GET]]
+    [compojure.core :refer [defroutes ANY context]]
+    [cemerick.friend :as friend]
     [rest.tasks.resources :as resources]))
 
 (defroutes tasks-routes
-  (GET "/tasks" [] resources/tasks-resources))
+  (context "/tasks" []
+    (ANY "/" [] resources/tasks)
+    (ANY "/:id" [id] resources/task)))

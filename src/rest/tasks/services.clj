@@ -7,8 +7,21 @@
 (defn all-tasks []
   (select tasks))
 
-(defn add-task [task]
-  (insert tasks (values task)))
+(defn update-task [task]
+  (update tasks
+    (set-fields {:title (:title task)
+                 :completed (:completed task)})
+    (where {:id (:id task)})))
+
+(defn tasks-belonging-to [user]
+  (select tasks
+    (where {:owner-id (:id user)
+            :completed false})))
+
+(defn add-task [task owner]
+  (insert tasks
+    (values
+      (into task {:owner-id (:id owner)}))))
 
 (defn mark-as-completed [id]
   (update tasks
