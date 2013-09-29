@@ -3,9 +3,9 @@
     [compojure.core :refer [defroutes ANY]]
     [compojure.route :as route]
     [rest.tasks.resources :as resources]
-    [rest.tasks.layouts :as layouts]))
+    [rest.tasks.views :as views]))
 
 (defroutes tasks-routes
   (ANY "/tasks" [] resources/tasks-resources)
   (route/resources "/")
-  (route/not-found layouts/not-found))
+  (route/not-found views/not-found))

@@ -1,4 +1,4 @@
-(ns rest.tasks.layouts
+(ns rest.tasks.views
   (:require
     [hiccup.core :refer [html]]
     [hiccup.element :refer [ordered-list]]

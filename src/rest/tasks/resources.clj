@@ -1,6 +1,6 @@
 (ns rest.tasks.resources
   (:require
-    [rest.tasks.layouts :as layouts]
+    [rest.tasks.views :as views]
     [rest.tasks.services :as services]
     [rest.tasks.models :as models]
     [liberator.core :refer [defresource]]
@@ -17,5 +17,5 @@
   :handle-ok
   #(let [media-type (get-in % [:representation :media-type])]
      (condp = media-type
-       "text/html" (layouts/tasks)
+       "text/html" (views/tasks)
        "application/json" (services/search-tasks))))
