@@ -25,6 +25,7 @@
       app-routes
       {:allow-anon? true
        :login-url "/login"
+       :default-landing-uri "/tasks"
        :unauthorized-handler #(-> unauthorized
                                   resp/response
                                   (resp/status 401))
