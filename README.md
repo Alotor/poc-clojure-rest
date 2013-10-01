@@ -36,6 +36,8 @@ Once the database is ready you can start the server by executing:
 lein ring server-headless
 ```
 
+To check the application enter http://localhost:3000/login and login with admin/admin.
+
 ## Stack description
 ### Liberator
 Library to use REST resourcers inside the Ring middleware
