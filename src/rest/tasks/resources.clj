@@ -18,14 +18,9 @@
 
 (defresource tasks
   :allowed-methods [:get :post]
-  :available-media-types ["text/html" "application/json"]
-  :authorized? logged-in-user
-  :handle-ok
-  #(let [media-type (get-in % [:representation :media-type])
-         user (logged-in-user %)]
-     (condp = media-type
-       "text/html" (views/tasks)
-       "application/json" (services/tasks-belonging-to user)))
+  :available-media-types ["application/json"]
+  :handle-ok #(let [ user (logged-in-user %)]
+                (services/tasks-belonging-to user))
   :post! (fn [context]
            (let [body (slurp (get-in context [:request :body]))
                  user (logged-in-user context)]
@@ -34,7 +29,6 @@
 (defresource task
   :allowed-methods [:get :put :delete]
   :available-media-types ["application/json"]
-  :authorized? logged-in-user ; FIXME: this should check for ownership too
   :put! (fn [context]
            (let [body (slurp (get-in context [:request :body]))
                  id (services/update-task (read-str body :key-fn keyword))]

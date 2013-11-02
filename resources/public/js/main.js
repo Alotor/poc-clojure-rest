@@ -1,9 +1,9 @@
 require(['backbone'], function(Backbone) {
     var Task = Backbone.Model.extend({
-        urlRoot: '/tasks'
+        urlRoot: '/api/tasks'
     });
     var Tasks = Backbone.Collection.extend({
-        url: '/tasks',
+        url: '/api/tasks',
         model: Task
     });
     var TasksView = Backbone.View.extend({

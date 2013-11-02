@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>Prueba</title>
+        <link rel="stylesheet" type="text/css" href="/css/normalize.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/foundation.css"/>
+    </head>
+    <body class="row">
+        <div id="content" class="columns small-12">
+            <h1>Tasks</h1>
+            <section id="tasks">
+                <ul id="task-list"></ul>
+                <form>
+                    <label for="task-title">New Task</label>
+                    <input type="text" name="task-title" placeholder="Buy some milk"/>
+                    <input type="submit" id="new-task" value="Add"/>
+                </form>
+            </section>
+        </div>
+
+        <script src="/js/vendor/require.js"></script>
+        <script src="/js/config.js"></script>
+        <script src="/js/main.js"></script>
+    </body>
+</html>

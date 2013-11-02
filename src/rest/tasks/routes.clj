@@ -6,5 +6,6 @@
 
 (defroutes tasks-routes
   (context "/tasks" []
-    (ANY "/" [] resources/tasks)
-    (ANY "/:id" [id] resources/task)))
+    (ANY "/" request (friend/authenticated (fn [context] (resources/tasks context))))
+    (ANY "/:id" request (friend/authenticated (fn [context] (resources/task context))))
+  ))
