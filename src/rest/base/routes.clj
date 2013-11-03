@@ -2,8 +2,7 @@
   (:require
     [ring.util.response :as resp]
     [compojure.core :refer [defroutes, GET]]
-    [compojure.route :as route]
-    [rest.base.views :as views]))
+    [compojure.route :as route]))
 
 (defroutes base-routes
   ; Redirect the root to the index

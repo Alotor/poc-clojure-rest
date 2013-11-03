@@ -1,4 +1,11 @@
 require(['backbone'], function(Backbone) {
+    var sync = Backbone.sync;
+    Backbone.sync = function (method, model, options) {
+        options.beforeSend = function (xhr) {
+            xhr.setRequestHeader("Authorization", "Token XXXX");
+        };
+        sync(method, model, options);
+    };
     var Task = Backbone.Model.extend({
         urlRoot: '/api/tasks'
     });

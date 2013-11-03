@@ -6,6 +6,7 @@
 
     ; Auth
     [rest.auth.services :as auth]
+    [rest.auth.token :as token]
     [cemerick.friend :as friend]
     [cemerick.friend.credentials :as credentials]
     [cemerick.friend.workflows :as workflows]
@@ -18,18 +19,25 @@
 (defroutes api-routes
   ; Additional API Routes
   (context "/api" []
-    (routes auth-routes
-            tasks-routes))
+    (routes tasks-routes))
   (routes base-routes))
 
-(def api-realm "MY_REALM")
+(def secret-key "MYSECRET")
 (def app
   (handler/api
     (friend/authenticate
       api-routes
       { :allow-anon? true
-        :unauthenticated-handler #(workflows/http-basic-deny api-realm %)
-        :workflows [(workflows/http-basic
-                     :credential-fn (partial credentials/bcrypt-credential-fn auth/get-user)
-                     :realm api-realm)]
+        ;:unauthenticated-handler #(workflows/http-basic-deny api-realm %)
+        :workflows [(token/token-auth :secret secret-key)]
       })))
+;(def app
+;  (handler/api
+;    (friend/authenticate
+;      api-routes
+;      { :allow-anon? true
+;        :unauthenticated-handler #(workflows/http-basic-deny api-realm %)
+;        :workflows [(workflows/http-basic
+;                     :credential-fn (partial credentials/bcrypt-credential-fn auth/get-user)
+;                     :realm api-realm)]
+;      })))

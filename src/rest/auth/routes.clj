@@ -2,11 +2,8 @@
   (:require
     [compojure.core :refer [defroutes GET ANY]]
     [cemerick.friend :as friend]
-    [ring.util.response :refer [redirect]]
-    [rest.auth.views :refer [login-form bye]]))
+    [rest.auth.resources :as resources]
+    [ring.util.response :refer [redirect]]))
 
 (defroutes auth-routes
-  (GET "/" [] (redirect "/tasks"))
-  (GET "/login" [] login-form)
-  (friend/logout (ANY "/logout" [] (redirect "/logout/bye")))
-  (GET "/logout/bye" [] bye))
+  (GET "/token" request resources/get-token))

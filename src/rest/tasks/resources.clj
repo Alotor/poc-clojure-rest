@@ -1,6 +1,5 @@
 (ns rest.tasks.resources
   (:require
-    [rest.tasks.views :as views]
     [rest.tasks.services :as services]
     [rest.tasks.models :as models]
     [rest.auth.services :refer [logged-in-user]]
