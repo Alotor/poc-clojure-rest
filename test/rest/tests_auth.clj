@@ -21,4 +21,8 @@
     (let [signed (crypto/sign "foo")]
       (Thread/sleep 1000)
       ;; (is (= nil (crypto/unsign signed :max-age 2)))
-      (is (= "foo" (crypto/unsign signed :max-age 20))))))
+      (is (= "foo" (crypto/unsign signed :max-age 20)))))
+  (testing "Signing/Unsigning complex clojure data"
+    (let [signed (crypto/dumps {:foo 2 :bar 1})]
+      (Thread/sleep 1000)
+      (is (= {:foo 2 :bar 1} (crypto/loads signed))))))
