@@ -83,17 +83,32 @@
   [^String s, ^String salt]
   (salted-hmac salt s))
 
+(defn make-timestamped-signature
+  [^String s, ^String salt, ^String sep, ^String stamp]
+  (let [signature (make-signature s salt)]
+    (format "%s%s%s" signature sep stamp)))
+
+(defn timestamp
+  "Get current timestamp."
+  []
+  (quot (System/currentTimeMillis) 1000))
+
 (defn sign
   "Sign string using a private key globally defined."
   [^String s & {:keys [sep salt] :or {sep ":" salt "clj"}}]
-  (let [signature (make-signature s salt)]
+  (let [stamp     (str->base64 (str (timestamp)))
+        signature (make-timestamped-signature s salt sep stamp)]
     (format "%s%s%s" s sep signature)))
 
 (defn unsign
   "Unsign string using a private key globally defined."
-  [^String s & {:keys [sep salt] :or {sep ":" salt "clj"}}]
-  (let [[value sig] (split s (re-pattern sep))]
+  [^String s & {:keys [sep salt max-age] :or {sep ":" salt "clj" max-age nil}}]
+  (let [[value sig stamp] (split s (re-pattern sep))]
     (when (= sig (make-signature value salt))
-      value)))
+      (if-not (nil? max-age)
+        (let [old-stamp-value (Integer/parseInt (base64->str stamp))
+              age             (- (timestamp) old-stamp-value)]
+          (if (> age max-age) nil value))
+        value))))
 
 (reset! *secret-key* (make-keyspec "1234567890"))
