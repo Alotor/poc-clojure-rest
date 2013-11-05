@@ -1,6 +1,7 @@
 (ns rest.core.crypto
   (:require [clojure.string :refer [split]]
-            [taoensso.nippy :as nippy])
+            [taoensso.nippy :as nippy]
+            [clojure.string :as str])
   (:import (javax.crypto Mac)
            (javax.crypto.spec SecretKeySpec)
            (org.apache.commons.codec.binary Base64 Hex)
@@ -34,7 +35,7 @@
   "Encode a bytes array to base64."
   [#^bytes data]
   (let [codec (Base64. true)]
-    (.encodeToString codec data)))
+    (str/trim (.encodeToString codec data))))
 
 (defn base64->bytes
   "Decode from base64 to bytes."
@@ -48,7 +49,7 @@
   [^String s]
   (let [codec (Base64. true)
         data  (str->bytes s)]
-    (.encodeToString codec data)))
+    (str/trim (.encodeAsString codec data))))
 
 (defn base64->str
   "Decode from base64 to string."
