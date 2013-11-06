@@ -14,7 +14,10 @@
                  [hiccup "1.0.4"]
                  ; Authentication and authorization
                  [com.cemerick/friend "0.1.5"]
-                 [commons-codec/commons-codec "1.8"]]
+                 [commons-codec/commons-codec "1.8"]
+
+                 ; Serialization
+                 [com.taoensso/nippy "2.4.1"]]
   :plugins [[lein-ring "0.8.7"]]
   :ring {:handler rest.core/app}
   :eval-in-leiningen true)

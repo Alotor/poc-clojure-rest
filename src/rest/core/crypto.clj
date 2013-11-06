@@ -1,5 +1,6 @@
 (ns rest.core.crypto
-  (:require [clojure.string :refer [split]])
+  (:require [clojure.string :refer [split]]
+            [taoensso.nippy :as nippy])
   (:import (javax.crypto Mac)
            (javax.crypto.spec SecretKeySpec)
            (org.apache.commons.codec.binary Base64 Hex)
@@ -28,6 +29,19 @@
   encoded string."
   [#^bytes data]
   (Hex/encodeHexString data))
+
+(defn bytes->base64
+  "Encode a bytes array to base64."
+  [#^bytes data]
+  (let [codec (Base64. true)]
+    (.encodeToString codec data)))
+
+(defn base64->bytes
+  "Decode from base64 to bytes."
+  [^String s]
+  (let [codec (Base64. true)
+        data  (.decode codec s)]
+    data))
 
 (defn str->base64
   "Encode to urlsafe base64."
@@ -110,5 +124,18 @@
               age             (- (timestamp) old-stamp-value)]
           (if (> age max-age) nil value))
         value))))
+
+(defn dumps
+  "Sign a complex data strucutres using
+  serialization as intermediate step."
+  [data & args]
+  (let [encoded (bytes->base64 (nippy/freeze data))]
+    (apply sign (cons encoded (vec args)))))
+
+(defn loads
+  "Unsign data signed with dumps."
+  [^String s & args]
+  (let [unsigned (apply unsign (cons s (vec args)))]
+    (nippy/thaw (base64->bytes unsigned))))
 
 (reset! *secret-key* (make-keyspec "1234567890"))
