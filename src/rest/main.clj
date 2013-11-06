@@ -1,4 +1,4 @@
-(ns rest.core
+(ns rest.main
   (:require
     [compojure.handler :as handler]
     [compojure.core :refer [defroutes, routes, context]]

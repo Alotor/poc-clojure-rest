@@ -19,5 +19,5 @@
                  ; Serialization
                  [com.taoensso/nippy "2.4.1"]]
   :plugins [[lein-ring "0.8.7"]]
-  :ring {:handler rest.core/app}
+  :ring {:handler rest.main/app}
   :eval-in-leiningen true)
