@@ -1,20 +1,15 @@
 (ns rest.main
-  (:require
-    [compojure.handler :as handler]
-    [compojure.core :refer [defroutes, routes, context]]
-    [compojure.route :as route]
-
-    ; Auth
-    [rest.auth.services :as auth]
-    [rest.auth.token :as token]
-    [cemerick.friend :as friend]
-    [cemerick.friend.credentials :as credentials]
-    [cemerick.friend.workflows :as workflows]
-
-    ; Routes
-    [rest.auth.routes :refer [auth-routes]]
-    [rest.tasks.routes :refer [tasks-routes]]
-    [rest.base.routes :refer [base-routes]]))
+  ;; (:import rest.core.auth.StatelessTokenBackend)
+  (:require [compojure.handler :as handler]
+            [compojure.core :refer [defroutes, routes, context]]
+            [compojure.route :as route]
+            [rest.core.auth :as auth]
+            ; Routes
+            [rest.auth.routes :refer [auth-routes]]
+            [rest.tasks.routes :refer [tasks-routes]]
+            [rest.base.routes :refer [base-routes]]
+            [ring.adapter.jetty :as jetty])
+  (:gen-class))
 
 (defroutes api-routes
   ; Additional API Routes
@@ -22,22 +17,20 @@
     (routes tasks-routes))
   (routes base-routes))
 
-(def secret-key "MYSECRET")
-(def app
-  (handler/api
-    (friend/authenticate
-      api-routes
-      { :allow-anon? true
-        ;:unauthenticated-handler #(workflows/http-basic-deny api-realm %)
-        :workflows [(token/token-auth :secret secret-key)]
-      })))
-;(def app
-;  (handler/api
-;    (friend/authenticate
-;      api-routes
-;      { :allow-anon? true
-;        :unauthenticated-handler #(workflows/http-basic-deny api-realm %)
-;        :workflows [(workflows/http-basic
-;                     :credential-fn (partial credentials/bcrypt-credential-fn auth/get-user)
-;                     :realm api-realm)]
-;      })))
+(defn make-handler
+  "Create a main handler."
+  (handler/api api-routes))
+
+;; (defn make-handler
+;;   "Create a main handler."
+;;   (let [backend (auth/->StatelessTokenBackend nil)]
+;;     (-> (auth/wrap-auth backend api-routes)
+;;         (handler/api))))
+
+(def app (make-handler))
+
+(defn -main
+  [& args]
+  (println "Now listening on: http://127.0.0.1:9090/")
+  (jetty/run-jetty #'app {:port 9090}))
+
